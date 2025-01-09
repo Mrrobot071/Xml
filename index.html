@@ -52,14 +52,28 @@
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(event.target.result, "application/xml");
 
-                // Exemplo: extraindo elementos do XML
+                // Extraindo dados do XML complexo
                 const rows = [];
-                const elements = xmlDoc.getElementsByTagName("item"); // Mude "item" para o elemento do XML
+                const products = xmlDoc.getElementsByTagName("product");
 
-                for (let i = 0; i < elements.length; i++) {
-                    const name = elements[i].getElementsByTagName("name")[0]?.textContent || "N/A";
-                    const value = elements[i].getElementsByTagName("value")[0]?.textContent || "N/A";
-                    rows.push({ Nome: name, Valor: value });
+                for (let i = 0; i < products.length; i++) {
+                    const product = products[i];
+                    const id = product.getAttribute("id") || "N/A";
+                    const name = product.getElementsByTagName("name")[0]?.textContent || "N/A";
+                    const category = product.getElementsByTagName("category")[0]?.textContent || "N/A";
+                    const price = product.getElementsByTagName("price")[0]?.textContent || "N/A";
+                    const currency = product.getElementsByTagName("price")[0]?.getAttribute("currency") || "N/A";
+                    const available = product.getElementsByTagName("available")[0]?.textContent || "N/A";
+                    const sold = product.getElementsByTagName("sold")[0]?.textContent || "N/A";
+
+                    rows.push({
+                        ID: id,
+                        Nome: name,
+                        Categoria: category,
+                        Preço: `${price} ${currency}`,
+                        Disponível: available,
+                        Vendido: sold
+                    });
                 }
 
                 if (rows.length > 0) {
