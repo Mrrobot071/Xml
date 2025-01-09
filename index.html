@@ -1,15 +1,75 @@
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Extrair Dados XML para Excel</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Xml</title>
+  <style>
+  html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Garante que a altura seja 100% da viewport */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1; /* Faz a área principal ocupar o espaço disponível */
+}
+    header {
+      background-color: black;
+      text-align: center;
+      padding: 15px 0 5px;
+    }
+
+    .logo {
+      font-size: 2em;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: red;
+    }
+
+    footer {
+      background-color: rgba(0, 0, 0, 0.51);
+      backdrop-filter: blur(10px);
+      color: white;
+      text-align: center;
+      padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      bottom: 0;
+      z-index: 6;
+    }
+
+    footer p {
+      margin: 8px 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    a {
+      color: white;
+      background-color: rgba(0, 0, 0, 0.51);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      padding: 5px;
+      text-decoration: none;
+    } 
         .container {
             max-width: 600px;
             margin: auto;
@@ -28,6 +88,10 @@
     </style>
 </head>
 <body>
+      <header>
+    <div class="logo">Xml to Excel</div>
+    <h2>Extrair dado Xml para xlsx</h2>
+  </header>   
     <div class="container">
         <h1>Extrair Dados de XML para Excel</h1>
         <input type="file" id="xmlFile" accept=".xml" />
@@ -95,5 +159,16 @@
             XLSX.writeFile(workbook, "dados.xlsx");
         }
     </script>
+      <footer>
+    <p>Copyright © 2025</p>
+    <p>Desenvolvido por Lucas Nathan</p>
+    <ul>
+      <li><a href="https://wa.me/557192920032" target="_blank"><i class="fab fa-whatsapp"></i></a></li>
+      <li><a href="https://www.instagram.com/k1evil/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+      <li><a href="https://www.facebook.com/lucas.coelho.7564129" target="_blank"><i class="fab fa-facebook"></i></a></li>
+      <li><a href="https://www.linkedin.com/in/lucas-nathan-760944229/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+    </ul>
+  </footer>
+
 </body>
 </html>
