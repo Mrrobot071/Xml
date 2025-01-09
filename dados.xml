@@ -1,10 +1,29 @@
-<items>
-    <item>
-        <name>Produto 1</name>
-        <value>100</value>
-    </item>
-    <item>
-        <name>Produto 2</name>
-        <value>200</value>
-    </item>
-</items>
+<catalog>
+    <product id="1">
+        <name>Notebook Gamer</name>
+        <category>Eletrônicos</category>
+        <price currency="BRL">4500.00</price>
+        <stock>
+            <available>50</available>
+            <sold>10</sold>
+        </stock>
+    </product>
+    <product id="2">
+        <name>Smartphone</name>
+        <category>Eletrônicos</category>
+        <price currency="BRL">2500.00</price>
+        <stock>
+            <available>200</available>
+            <sold>150</sold>
+        </stock>
+    </product>
+    <product id="3">
+        <name>Geladeira</name>
+        <category>Eletrodomésticos</category>
+        <price currency="BRL">3000.00</price>
+        <stock>
+            <available>20</available>
+            <sold>5</sold>
+        </stock>
+    </product>
+</catalog>
