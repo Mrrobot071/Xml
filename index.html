@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -22,7 +21,9 @@ body {
   flex: 1; /* Faz a área principal ocupar o espaço disponível */
 }
     header {
-      background-color: black;
+      background-color: rgba(0, 0, 0, 0.51);
+      backdrop-filter: blur(10px);
+      color: white;
       text-align: center;
       padding: 15px 0 5px;
     }
@@ -98,67 +99,70 @@ body {
         <button class="btn" onclick="processXML()">Gerar Excel</button>
         <p id="status"></p>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+  function processXML() {
+    const fileInput = document.getElementById('xmlFile');
+    const status = document.getElementById('status');
 
-    <script>
-        function processXML() {
-            const fileInput = document.getElementById('xmlFile');
-            const status = document.getElementById('status');
+    if (!fileInput.files.length) {
+      status.textContent = "Por favor, selecione um arquivo XML.";
+      return;
+    }
 
-            if (!fileInput.files.length) {
-                status.textContent = "Por favor, selecione um arquivo XML.";
-                return;
-            }
+    const file = fileInput.files[0];
+    const reader = new FileReader();
 
-            const file = fileInput.files[0];
-            const reader = new FileReader();
+    reader.onload = function (event) {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(event.target.result, "application/xml");
 
-            reader.onload = function (event) {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(event.target.result, "application/xml");
+      const rows = [];
+      const products = xmlDoc.getElementsByTagName("product");
 
-                // Extraindo dados do XML complexo
-                const rows = [];
-                const products = xmlDoc.getElementsByTagName("product");
+      for (let i = 0; i < products.length; i++) {
+        const product = products[i];
+        const row = {};
 
-                for (let i = 0; i < products.length; i++) {
-                    const product = products[i];
-                    const id = product.getAttribute("id") || "N/A";
-                    const name = product.getElementsByTagName("name")[0]?.textContent || "N/A";
-                    const category = product.getElementsByTagName("category")[0]?.textContent || "N/A";
-                    const price = product.getElementsByTagName("price")[0]?.textContent || "N/A";
-                    const currency = product.getElementsByTagName("price")[0]?.getAttribute("currency") || "N/A";
-                    const available = product.getElementsByTagName("available")[0]?.textContent || "N/A";
-                    const sold = product.getElementsByTagName("sold")[0]?.textContent || "N/A";
+        Array.from(product.children).forEach(child => {
+          const tagName = child.tagName;
+          const value = child.textContent || "N/A";
 
-                    rows.push({
-                        ID: id,
-                        Nome: name,
-                        Categoria: category,
-                        Preço: `${price} ${currency}`,
-                        Disponível: available,
-                        Vendido: sold
-                    });
-                }
+          if (child.attributes.length > 0) {
+            Array.from(child.attributes).forEach(attr => {
+              row[`${tagName}_${attr.name}`] = attr.value;
+            });
+          }
 
-                if (rows.length > 0) {
-                    generateExcel(rows);
-                    status.textContent = "Planilha gerada com sucesso!";
-                } else {
-                    status.textContent = "Nenhum dado encontrado no arquivo XML.";
-                }
-            };
+          row[tagName] = value;
+        });
 
-            reader.readAsText(file);
-        }
+        Array.from(product.attributes).forEach(attr => {
+          row[`product_${attr.name}`] = attr.value;
+        });
 
-        function generateExcel(data) {
-            const worksheet = XLSX.utils.json_to_sheet(data);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Dados");
+        rows.push(row);
+      }
 
-            XLSX.writeFile(workbook, "dados.xlsx");
-        }
-    </script>
+      if (rows.length > 0) {
+        generateExcel(rows);
+        status.textContent = "Planilha gerada com sucesso!";
+      } else {
+        status.textContent = "Nenhum dado encontrado no arquivo XML.";
+      }
+    };
+
+    reader.readAsText(file);
+  }
+
+  function generateExcel(data) {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Dados");
+
+    XLSX.writeFile(workbook, "dados.xlsx");
+  }
+</script>
       <footer>
     <p>Copyright © 2025</p>
     <p>Desenvolvido por Lucas Nathan</p>
@@ -169,6 +173,5 @@ body {
       <li><a href="https://www.linkedin.com/in/lucas-nathan-760944229/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
     </ul>
   </footer>
-
 </body>
 </html>
