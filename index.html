@@ -120,29 +120,30 @@ body {
       const xmlDoc = parser.parseFromString(event.target.result, "application/xml");
 
       const rows = [];
-      const products = xmlDoc.getElementsByTagName("product");
-
-      for (let i = 0; i < products.length; i++) {
-        const product = products[i];
+      const nfeInfo = xmlDoc.getElementsByTagName("infNFe");
+      
+      if (nfeInfo.length > 0) {
         const row = {};
 
-        Array.from(product.children).forEach(child => {
-          const tagName = child.tagName;
-          const value = child.textContent || "N/A";
+        // Extrair dados específicos
+        const infNFe = nfeInfo[0];
 
-          if (child.attributes.length > 0) {
-            Array.from(child.attributes).forEach(attr => {
-              row[`${tagName}_${attr.name}`] = attr.value;
-            });
-          }
+        // Extrair infCpl de infAdic
+        const infAdic = xmlDoc.getElementsByTagName("infAdic")[0];
+        const infCpl = infAdic ? infAdic.getElementsByTagName("infCpl")[0].textContent : "N/A";
+        row["infCpl"] = infCpl;
 
-          row[tagName] = value;
-        });
+        // Extrair nNF de ide
+        const ide = xmlDoc.getElementsByTagName("ide")[0];
+        const nNF = ide ? ide.getElementsByTagName("nNF")[0].textContent : "N/A";
+        row["nNF"] = nNF;
 
-        Array.from(product.attributes).forEach(attr => {
-          row[`product_${attr.name}`] = attr.value;
-        });
+        // Extrair vPag de detPag
+        const pag = xmlDoc.getElementsByTagName("detPag")[0];
+        const vPag = pag ? pag.getElementsByTagName("vPag")[0].textContent : "N/A";
+        row["vPag"] = vPag;
 
+        // Adiciona dados à linha de resultados
         rows.push(row);
       }
 
